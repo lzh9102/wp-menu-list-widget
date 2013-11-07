@@ -21,7 +21,9 @@ class MenuListWidget extends WP_Widget {
 		echo $before_widget;
 		if (!empty($title))
 			echo $before_title . $title . $after_title;
+		echo '<div class="menu-list-widget">';
 		$this->_generate_menu_list();
+		echo '</div>';
 		echo $after_widget;
 	}
 
@@ -83,5 +85,5 @@ class MenuListWidget extends WP_Widget {
 	}
 }
 
-wp_enqueue_style("menu-list-widget", str_replace('.php', '.css', __FILE__));
+wp_enqueue_style("menu-list-widget", plugins_url('menu-list-widget/menu-list-widget.css'));
 add_action('widgets_init', create_function('', 'return register_widget("MenuListWidget");'));
