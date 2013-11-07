@@ -46,7 +46,7 @@ class MenuListWidget extends WP_Widget {
 		if (get_post_type($page_id) == "page") { // only show list for pages
 			$ancestors = get_ancestors($page_id, "page");
 			if (count($ancestors) > 0) // not toplevel item
-				$top_id = $ancestors[0]; // get toplevel item
+				$top_id = end($ancestors); // get toplevel item
 			else
 				$top_id = $page_id;; // current post is toplevel
 			$this->_walk_children($top_id);
