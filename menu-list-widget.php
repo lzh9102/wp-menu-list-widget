@@ -67,7 +67,9 @@ class MenuListWidget extends WP_Widget {
 		if (count($children) > 0) {
 			echo "<ul>";
 			foreach ($children as $child) {
-				echo "<li>" . $this->_format_link($child);
+				$is_current_page = (get_the_ID() == $child->ID);
+				echo $is_current_page ? '<li class="active">' : '<li>';
+				echo $this->_format_link($child, $is_current_page);
 				if ($depth < $maxdepth)
 					$this->_walk_children($child->ID, $depth+1, $maxdepth);
 				echo "</li>";
@@ -76,9 +78,9 @@ class MenuListWidget extends WP_Widget {
 		}
 	}
 
-	function _format_link($page) {
+	function _format_link($page, $is_current_page = false) {
 		$html = '<a href="' . get_permalink($page->ID) . '" ';
-		if (get_the_ID() == $page->ID)
+		if ($is_current_page)
 			$html .= 'class="active"';
 		$html .= '>' . $page->post_title . '</a>';
 		return $html;
