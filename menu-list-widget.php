@@ -45,7 +45,7 @@ class MenuListWidget extends WP_Widget {
 
 	function _generate_menu_list() {
 		$page_id = get_the_ID();
-		if (get_post_type($page_id) == "page") { // only show list for pages
+		if (get_post_type($page_id) == "page") { // current post is a page
 			$ancestors = get_ancestors($page_id, "page");
 			if (count($ancestors) > 0) // not toplevel item
 				$top_id = end(array_values($ancestors)); // get toplevel item
@@ -57,12 +57,14 @@ class MenuListWidget extends WP_Widget {
 			array_push($active_pages, $page_id);
 
 			$this->_walk_children($top_id, $active_pages);
+		} else { // show all toplevel pages for other types of posts
+			$this->_walk_children(0, array(), 0);
 		}
 	}
 
 	/** Display children of post with $page_id in the form of unordered list
 	 */
-	function _walk_children($page_id, $active_pages, $depth = 0, $maxdepth = 1) {
+	function _walk_children($page_id, $active_pages, $maxdepth = 1, $depth = 0) {
 		$children = get_pages(array(
 			'post_status' => 'publish',
 			'sort_order' => 'asc',
@@ -76,7 +78,7 @@ class MenuListWidget extends WP_Widget {
 				echo $is_active ? '<li class="active">' : '<li>';
 				echo $this->_format_link($child, $is_active);
 				if ($depth < $maxdepth)
-					$this->_walk_children($child->ID, $active_pages, $depth+1, $maxdepth);
+					$this->_walk_children($child->ID, $active_pages, $maxdepth, $depth+1);
 				echo "</li>";
 			}
 			echo "</ul>";
