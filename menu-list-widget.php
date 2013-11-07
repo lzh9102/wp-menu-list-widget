@@ -56,18 +56,14 @@ class MenuListWidget extends WP_Widget {
 	/** Display children of post with $page_id in the form of unordered list
 	 */
 	function _walk_children($page_id, $depth = 0, $maxdepth = 1) {
-		$wp_query = new WP_Query(array(
-			'post_type' => 'page',
+		$children = get_pages(array(
 			'post_status' => 'publish',
-			'order' => 'ASC',
-			'orderby' => 'menu_order',
-			'post_parent' => $page_id
+			'sort_order' => 'asc',
+			'sort_column' => 'menu_order',
+			'parent' => $page_id
 		));
-		if ($wp_query->have_posts()) {
-			while ($wp_query->have_posts()) {
-				$wp_query->the_post();
-				echo '<p>' . get_the_title() . '</p>';
-			}
+		foreach ($children as $child) {
+			echo '<p>' . $child->post_title . '</p>';
 		}
 		wp_reset_postdata();
 	}
