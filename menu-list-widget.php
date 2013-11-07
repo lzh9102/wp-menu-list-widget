@@ -83,4 +83,5 @@ class MenuListWidget extends WP_Widget {
 	}
 }
 
+wp_enqueue_style("menu-list-widget", str_replace('.php', '.css', __FILE__));
 add_action('widgets_init', create_function('', 'return register_widget("MenuListWidget");'));
