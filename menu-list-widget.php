@@ -62,8 +62,12 @@ class MenuListWidget extends WP_Widget {
 			'sort_column' => 'menu_order',
 			'parent' => $page_id
 		));
-		foreach ($children as $child) {
-			echo '<p>' . $child->post_title . '</p>';
+		if (count($children) > 0) {
+			echo "<ul>";
+			foreach ($children as $child) {
+				echo '<li>' . $child->post_title . '</li>';
+			}
+			echo "</ul>";
 		}
 		wp_reset_postdata();
 	}
