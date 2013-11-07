@@ -48,16 +48,21 @@ class MenuListWidget extends WP_Widget {
 		if (get_post_type($page_id) == "page") { // only show list for pages
 			$ancestors = get_ancestors($page_id, "page");
 			if (count($ancestors) > 0) // not toplevel item
-				$top_id = end($ancestors); // get toplevel item
+				$top_id = end(array_values($ancestors)); // get toplevel item
 			else
-				$top_id = $page_id;; // current post is toplevel
-			$this->_walk_children($top_id);
+				$top_id = $page_id; // current post is toplevel
+
+			// active pages are pages from the current page up to root
+			$active_pages = $ancestors;
+			array_push($active_pages, $page_id);
+
+			$this->_walk_children($top_id, $active_pages);
 		}
 	}
 
 	/** Display children of post with $page_id in the form of unordered list
 	 */
-	function _walk_children($page_id, $depth = 0, $maxdepth = 1) {
+	function _walk_children($page_id, $active_pages, $depth = 0, $maxdepth = 1) {
 		$children = get_pages(array(
 			'post_status' => 'publish',
 			'sort_order' => 'asc',
@@ -67,20 +72,20 @@ class MenuListWidget extends WP_Widget {
 		if (count($children) > 0) {
 			echo "<ul>";
 			foreach ($children as $child) {
-				$is_current_page = (get_the_ID() == $child->ID);
-				echo $is_current_page ? '<li class="active">' : '<li>';
-				echo $this->_format_link($child, $is_current_page);
+				$is_active = in_array($child->ID, $active_pages);
+				echo $is_active ? '<li class="active">' : '<li>';
+				echo $this->_format_link($child, $is_active);
 				if ($depth < $maxdepth)
-					$this->_walk_children($child->ID, $depth+1, $maxdepth);
+					$this->_walk_children($child->ID, $active_pages, $depth+1, $maxdepth);
 				echo "</li>";
 			}
 			echo "</ul>";
 		}
 	}
 
-	function _format_link($page, $is_current_page = false) {
+	function _format_link($page, $is_active = false) {
 		$html = '<a href="' . get_permalink($page->ID) . '" ';
-		if ($is_current_page)
+		if ($is_active)
 			$html .= 'class="active"';
 		$html .= '>' . $page->post_title . '</a>';
 		return $html;
