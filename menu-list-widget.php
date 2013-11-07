@@ -21,19 +21,17 @@ class MenuListWidget extends WP_Widget {
 		echo $before_widget;
 		if (!empty($title))
 			echo $before_title . $title . $after_title;
-
-		echo "<p>Menu List</p>";
-
+		$this->_generate_menu_list();
 		echo $after_widget;
 	}
 
-	function update( $new_instance, $old_instance ) {
+	function update($new_instance, $old_instance) {
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
 		return $instance;
 	}
 
-	function form( $instance ) {
+	function form($instance) {
 		$instance = wp_parse_args( (array) $instance, array( 'title' => '', 'text' => '' ) );
 		$title = strip_tags($instance['title']);
 ?>
@@ -41,6 +39,37 @@ class MenuListWidget extends WP_Widget {
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>
 
 		<?php
+	}
+
+	function _generate_menu_list() {
+		$page_id = get_the_ID();
+		if (get_post_type($page_id) == "page") { // only show list for pages
+			$ancestors = get_ancestors($page_id, "page");
+			if (count($ancestors) > 0) // not toplevel item
+				$top_id = $ancestors[0]; // get toplevel item
+			else
+				$top_id = $page_id;; // current post is toplevel
+			$this->_walk_children($top_id);
+		}
+	}
+
+	/** Display children of post with $page_id in the form of unordered list
+	 */
+	function _walk_children($page_id, $depth = 0, $maxdepth = 1) {
+		$wp_query = new WP_Query(array(
+			'post_type' => 'page',
+			'post_status' => 'publish',
+			'order' => 'ASC',
+			'orderby' => 'menu_order',
+			'post_parent' => $page_id
+		));
+		if ($wp_query->have_posts()) {
+			while ($wp_query->have_posts()) {
+				$wp_query->the_post();
+				echo '<p>' . get_the_title() . '</p>';
+			}
+		}
+		wp_reset_postdata();
 	}
 }
 
