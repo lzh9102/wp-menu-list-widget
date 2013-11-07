@@ -65,13 +65,18 @@ class MenuListWidget extends WP_Widget {
 		if (count($children) > 0) {
 			echo "<ul>";
 			foreach ($children as $child) {
-				echo "<li>" . $child->post_title;
+				echo "<li>" . $this->_format_link($child);
 				if ($depth < $maxdepth)
 					$this->_walk_children($child->ID, $depth+1, $maxdepth);
 				echo "</li>";
 			}
 			echo "</ul>";
 		}
+	}
+
+	function _format_link($page) {
+		return '<a href="' . get_permalink($page->ID)
+			. '">' . $page->post_title . '</a>';
 	}
 }
 
