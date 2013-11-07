@@ -75,8 +75,11 @@ class MenuListWidget extends WP_Widget {
 	}
 
 	function _format_link($page) {
-		return '<a href="' . get_permalink($page->ID)
-			. '">' . $page->post_title . '</a>';
+		$html = '<a href="' . get_permalink($page->ID) . '" ';
+		if (get_the_ID() == $page->ID)
+			$html .= 'class="active"';
+		$html .= '>' . $page->post_title . '</a>';
+		return $html;
 	}
 }
 
