@@ -65,11 +65,13 @@ class MenuListWidget extends WP_Widget {
 		if (count($children) > 0) {
 			echo "<ul>";
 			foreach ($children as $child) {
-				echo '<li>' . $child->post_title . '</li>';
+				echo "<li>" . $child->post_title;
+				if ($depth < $maxdepth)
+					$this->_walk_children($child->ID, $depth+1, $maxdepth);
+				echo "</li>";
 			}
 			echo "</ul>";
 		}
-		wp_reset_postdata();
 	}
 }
 
