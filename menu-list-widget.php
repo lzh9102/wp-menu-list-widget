@@ -19,8 +19,8 @@ class MenuListWidget extends WP_Widget {
 		extract($args);
 		$title = apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance);
 		echo $before_widget;
-		if (!empty($title))
-			echo $before_title . $title . $after_title;
+		//if (!empty($title))
+		//	echo $before_title . $title . $after_title;
 		echo '<div class="menu-list-widget">';
 		$this->_generate_menu_list();
 		echo '</div>';
