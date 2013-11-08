@@ -52,6 +52,18 @@ class MenuListWidget extends WP_Widget {
 			else
 				$top_id = $page_id; // current post is toplevel
 
+			// print title of the top-level page
+			// NOTE: get_pages() is used here to get all top-level page and compare
+			// each page id against top_id. By experience, the title won't be
+			// processed by qtranslate if get_page() is used instead.
+			$top_level_pages = get_pages(array('parent' => 0));
+			foreach ($top_level_pages as $page) {
+				if ($page->ID == $top_id) {
+					echo '<h3>' . $page->post_title . '</h3>';
+					break;
+				}
+			}
+
 			// active pages are pages from the current page up to root
 			$active_pages = $ancestors;
 			array_push($active_pages, $page_id);
