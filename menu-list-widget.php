@@ -93,7 +93,7 @@ class MenuListWidget extends WP_Widget {
 				else
 					echo "<li class=\"menu-list-level-$depth\">";
 				echo $this->_format_link($child, $is_active, $depth);
-				if ($depth < $maxdepth)
+				if ($depth < $maxdepth || $maxdepth < 0)
 					$this->_walk_children($child->ID, $active_pages, $maxdepth, $depth+1);
 				echo "</li>";
 			}
