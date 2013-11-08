@@ -77,7 +77,7 @@ class MenuListWidget extends WP_Widget {
 
 	/** Display children of post with $page_id in the form of unordered list
 	 */
-	function _walk_children($page_id, $active_pages, $maxdepth = 1, $depth = 0) {
+	function _walk_children($page_id, $active_pages, $maxdepth = -1, $depth = 0) {
 		$children = get_pages(array(
 			'post_status' => 'publish',
 			'sort_order' => 'asc',
