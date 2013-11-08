@@ -59,7 +59,8 @@ class MenuListWidget extends WP_Widget {
 			$top_level_pages = get_pages(array('parent' => 0));
 			foreach ($top_level_pages as $page) {
 				if ($page->ID == $top_id) {
-					echo '<h3>' . $page->post_title . '</h3>';
+					echo '<h3><a href="' . get_permalink($page->ID) . '">'
+						. $page->post_title . '</a></h3>';
 					break;
 				}
 			}
