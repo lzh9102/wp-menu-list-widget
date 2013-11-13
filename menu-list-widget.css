@@ -3,9 +3,13 @@
 	width: 0; 
 	height: 0; 
 	margin-left: 0.5em;
-	border-left: 0.4em solid transparent;
-	border-right: 0.4em solid transparent;
-	border-bottom: 0.4em solid #000;
+	border-left: 0.5em solid transparent;
+	border-right: 0.5em solid transparent;
+	border-bottom: 0.5em solid #333;
+}
+
+.contractable .arrow-up:hover {
+	border-bottom: 0.5em solid #777;
 }
 
 .contractable .arrow-down {
@@ -13,7 +17,11 @@
 	width: 0; 
 	height: 0; 
 	margin-left: 0.5em;
-	border-left: 0.4em solid transparent;
-	border-right: 0.4em solid transparent;
-	border-top: 0.4em solid #000;
+	border-left: 0.5em solid transparent;
+	border-right: 0.5em solid transparent;
+	border-top: 0.5em solid #333;
+}
+
+.contractable .arrow-down:hover {
+	border-top: 0.5em solid #777;
 }
