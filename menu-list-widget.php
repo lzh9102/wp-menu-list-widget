@@ -85,7 +85,7 @@ class MenuListWidget extends WP_Widget {
 			'parent' => $page_id
 		));
 		if (count($children) > 0) {
-			echo "<ul class=\"menu-list-level-$depth\">";
+			echo "<ul class=\"contractable menu-list-level-$depth\">";
 			foreach ($children as $child) {
 				if ($child->ID == $active_pages[0])
 					$add_class = "active";
@@ -121,4 +121,8 @@ class MenuListWidget extends WP_Widget {
 }
 
 wp_enqueue_style("menu-list-widget", plugins_url('menu-list-widget/menu-list-widget.css'));
+wp_enqueue_script("menu-list-widget-contractable",
+	plugins_url('menu-list-widget/jquery.contractable.list.js'),
+	array('jquery') // dependencies
+);
 add_action('widgets_init', create_function('', 'return register_widget("MenuListWidget");'));
