@@ -18,6 +18,8 @@ jQuery(function() {
         button.click(function() { toggle_list(button, sublists); });
         button.insertBefore(sublists.first());
         sublists.hide();
+		  if (child.hasClass('active') || child.hasClass('active_ancestor'))
+          toggle_list(button, sublists); // open current active lists
       }
     });
   };
