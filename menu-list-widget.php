@@ -67,7 +67,7 @@ class MenuListWidget extends WP_Widget {
 
 			// active pages are pages from the current page up to root
 			$active_pages = $ancestors;
-			array_push($active_pages, $page_id);
+			array_unshift($active_pages, $page_id); // prepend current page
 
 			$this->_walk_children($top_id, $active_pages);
 		} else { // show all toplevel pages for other types of posts
@@ -87,12 +87,14 @@ class MenuListWidget extends WP_Widget {
 		if (count($children) > 0) {
 			echo "<ul class=\"menu-list-level-$depth\">";
 			foreach ($children as $child) {
-				$is_active = in_array($child->ID, $active_pages);
-				if ($is_active)
-					echo "<li class=\"active menu-list-level-$depth\">";
+				if ($child->ID == $active_pages[0])
+					$add_class = "active";
+				else if (in_array($child->ID, $active_pages))
+					$add_class = "active_ancestor";
 				else
-					echo "<li class=\"menu-list-level-$depth\">";
-				echo $this->_format_link($child, $is_active, $depth);
+					$add_class = "";
+				echo "<li class=\"menu-list-level-$depth $add_class\">";
+				echo $this->_format_link($child, $add_class, $depth);
 				if ($depth < $maxdepth || $maxdepth < 0)
 					$this->_walk_children($child->ID, $active_pages, $maxdepth, $depth+1);
 				echo "</li>";
@@ -101,11 +103,10 @@ class MenuListWidget extends WP_Widget {
 		}
 	}
 
-	function _format_link($page, $is_active = false, $level = -1) {
+	function _format_link($page, $add_class = "", $level = -1) {
 		$html = '<a href="' . get_permalink($page->ID) . '" ';
 		$classes = array();
-		if ($is_active)
-			array_push($classes, "active");
+		array_push($classes, $add_class);
 		if ($level >= 0)
 			array_push($classes, "menu-list-level-$level");
 		if (!empty($classes)) {
