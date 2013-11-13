@@ -1,12 +1,13 @@
 jQuery(function() {
+  var animate_duration = 200; // milliseconds
   var $ = jQuery;
   var toggle_list = function(button, sublists) {
     if (button.hasClass('arrow-down')) { // show sublist
       button.removeClass('arrow-down').addClass('arrow-up');
-      sublists.show();
+      sublists.slideDown(animate_duration);
     } else { // hide sublist
       button.removeClass('arrow-up').addClass('arrow-down');
-      sublists.hide();
+      sublists.slideUp(animate_duration);
     }
   }
   var traverse_children = function(list) {
@@ -17,9 +18,11 @@ jQuery(function() {
         var button = $('<span class="arrow-down"></span>');
         button.click(function() { toggle_list(button, sublists); });
         button.insertBefore(sublists.first());
-        sublists.hide();
-		  if (child.hasClass('active') || child.hasClass('active_ancestor'))
-          toggle_list(button, sublists); // open current active lists
+		  if (child.hasClass('active') || child.hasClass('active_ancestor')) {
+			  button.removeClass('arrow-down').addClass('arrow-up');
+		  } else {
+			  sublists.hide();
+		  }
       }
     });
   };
