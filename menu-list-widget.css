@@ -1,5 +1,6 @@
 .contractable .arrow-up,
 .contractable .arrow-down {
+	cursor: pointer;
 	position: absolute;
 	top: 0px;
 	right: 0px;
