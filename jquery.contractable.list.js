@@ -17,7 +17,7 @@ jQuery(function() {
       if (sublists.length > 0) { // has sublist
         var button = $('<span class="arrow-down"></span>');
         button.click(function() { toggle_list(button, sublists); });
-        button.insertBefore(sublists.first());
+		  child.children('.menu-list-item').append(button);
 		  if (child.hasClass('active') || child.hasClass('active_ancestor')) {
 			  button.removeClass('arrow-down').addClass('arrow-up');
 		  } else {
